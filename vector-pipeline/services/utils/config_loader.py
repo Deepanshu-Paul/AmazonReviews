@@ -1,17 +1,17 @@
 import os
-import json
+import yaml
 
-def load_config():
-    """
-    Loads configuration from a JSON file at configs/pipeline_config.json or environment overrides.
-    """
-    config_path = os.getenv("PIPELINE_CONFIG_PATH", "configs/pipeline_config.json")
-    try:
-        with open(config_path, "r") as f:
-            config = json.load(f)
-    except FileNotFoundError:
-        print(f"Config file {config_path} not found, using empty config.")
-        config = {}
+def load_system_config(config_path=None):
+    path = config_path or "configs/system_config.yml"
+    with open(path, "r") as f:
+        config = yaml.safe_load(f)
+    return config
+
+def load_tables_config(config_path=None):
+    path = config_path or "configs/tables_config.yml"
+    with open(path, "r") as f:
+        config = yaml.safe_load(f)
+    return config.get("tables", [])
 
     # Override config with environment variables if available
     config.setdefault("minio", {})

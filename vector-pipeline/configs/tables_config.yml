@@ -1,0 +1,7 @@
+tables:
+  - schema: "customer_stg"
+    table: "reviews"
+  # - schema: "customer_stg"
+  #   table: "orders"
+  # - schema: "analytics_stg"
+  #   table: "user_sessions"
