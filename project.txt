@@ -1,0 +1,49 @@
+vector-pipeline/
+├── charts/                      # Helm charts or Kubernetes manifests (if using k8s)
+│   ├── qdrant/
+│   ├── airflow/
+│   └── minio/
+├── configs/                     # Configuration files
+│   ├── airflow/                 # Airflow config overrides (airflow.cfg, variables.json)
+│   ├── beam/                    # Apache Beam pipeline options (yaml/properties)
+│   ├── qdrant/                  # Qdrant settings (qdrant.yaml)
+│   └── logging/                 # Vector.dev or Prometheus config
+├── dags/                        # Airflow DAG definitions
+│   ├── ingestion_dag.py
+│   ├── preprocessing_dag.py
+│   ├── embedding_dag.py
+│   └── indexing_dag.py
+├── pipelines/                   # Apache Beam pipelines
+│   ├── __init__.py
+│   ├── ingestion.py
+│   ├── preprocessing.py
+│   └── indexing.py
+├── services/                    # API and helper services
+│   ├── search_api/              # Flask or FastAPI application
+│   │   ├── app.py
+│   │   ├── routers.py
+│   │   └── schemas.py
+│   └── utils/                   # Shared utilities (e.g., serialization, error handling)
+│       ├── logger.py
+│       └── config_loader.py
+├── embeddings/                  # Embedding generation modules
+│   ├── __init__.py
+│   ├── embedder.py              # Abstraction for different embed models
+│   └── ray_tasks.py             # Ray task definitions for parallel embedding
+├── scripts/                     # Utility scripts (e.g., setup, migrations)
+│   ├── setup_env.sh
+│   └── migrate_db.py
+├── tests/                       # Unit and integration tests
+│   ├── pipelines/
+│   ├── dags/
+│   ├── services/
+│   └── embeddings/
+├── .github/                     # CI/CD workflows
+│   └── workflows/
+│       ├── ci.yml
+│       └── cd.yml
+├── Dockerfile                   # Base image for services
+├── docker-compose.yml           # Local development stack
+├── requirements.txt             # Python dependencies
+├── Makefile                     # Common tasks (lint, test, deploy)
+└── README.md                    # Project overview and setup instructions
