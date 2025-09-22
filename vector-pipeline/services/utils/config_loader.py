@@ -34,6 +34,7 @@ def load_system_config(config_path: Optional[str] = None) -> Dict[str, Any]:
     environment overrides where present. Returns a dict with canonical keys:
     - minio: endpoint, access_key, secret_key, bucket_name, secure
     - postgres: host, port, database, user, password (and alias dbname)
+    - qdrant: url, api_key, prefer_grpc
     """
     path = _resolve_path("configs/system_config.yml", config_path)
     config = _read_yaml(path)
@@ -41,6 +42,7 @@ def load_system_config(config_path: Optional[str] = None) -> Dict[str, Any]:
     # Ensure sub-dicts exist
     config.setdefault("minio", {})
     config.setdefault("postgres", {})
+    config.setdefault("qdrant", {})
 
     # MinIO overrides
     mi = config["minio"]
@@ -61,6 +63,12 @@ def load_system_config(config_path: Optional[str] = None) -> Dict[str, Any]:
     pg["password"] = os.getenv("POSTGRES_PASSWORD", pg.get("password"))
     # Back-compat alias for code that expects 'dbname'
     pg["dbname"] = pg.get("database")
+
+    # Qdrant overrides (token-based cloud or local)
+    qd = config["qdrant"]
+    qd["url"] = os.getenv("QDRANT_URL", qd.get("url"))
+    qd["api_key"] = os.getenv("QDRANT_API_KEY", qd.get("api_key"))
+    qd["prefer_grpc"] = _to_bool(os.getenv("QDRANT_PREFER_GRPC", qd.get("prefer_grpc", False)))
 
     return config
 
@@ -91,8 +99,44 @@ def load_preprocessing_config(config_path: Optional[str] = None) -> List[Dict[st
 def load_embedding_config(config_path: Optional[str] = None) -> List[Dict[str, Any]]:
     """
     Load embedding pipelines as a list from YAML. Each entry may define
-    source table, text fields, model settings, and Qdrant collection config.
+    source table, text fields, fields_map, model settings, and Qdrant config.
     """
     path = _resolve_path("configs/embedding_config.yml", config_path)
     cfg = _read_yaml(path)
     return cfg.get("embedding_pipelines", [])
+
+def load_clustering_config(config_path: Optional[str] = None) -> Dict[str, Any]:
+    """
+    Load clustering configuration (algorithm, params, I/O batch sizes, results table).
+    Defaults to MiniBatchKMeans with streaming-friendly batch sizes if file is missing.
+    """
+    path = _resolve_path("configs/clustering_config.yml", config_path)
+    if not Path(path).exists():
+        return {
+            "clustering": {
+                "collection_name": "amazon_reviews",
+                "algorithm": "minibatchkmeans",
+                "params": {
+                    "n_clusters": 10,
+                    "n_init": "auto",
+                    "max_iter": 100,
+                    "random_state": 42,
+                    "batch_size": 10000,
+                },
+                "io": {
+                    "scroll_batch": 5000,
+                    "predict_batch": 10000,
+                    "payload_batch": 2000,
+                    "db_batch": 5000,
+                },
+                "results_table": {"schema": "analytics", "table": "reviews_with_clusters"},
+            }
+        }
+    return _read_yaml(path)
+
+def load_payload_config(config_path: Optional[str] = None) -> Dict[str, Any]:
+    """
+    Load payload include_fields mapping for Qdrant payloads and analytics tables.
+    """
+    path = _resolve_path("configs/payload_config.yml", config_path)
+    return _read_yaml(path)

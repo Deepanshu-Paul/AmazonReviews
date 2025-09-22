@@ -1,0 +1,18 @@
+# configs/clustering_config.yml
+clustering:
+  collection_name: "amazon_reviews"
+  algorithm: "minibatchkmeans"    # options: minibatchkmeans, kmeans
+  params:
+    n_clusters: 10
+    n_init: "auto"
+    max_iter: 100
+    random_state: 42
+    batch_size: 10000             # MiniBatchKMeans partial_fit batch size
+  io:
+    scroll_batch: 5000            # Qdrant scroll page size
+    predict_batch: 10000          # label prediction batch size
+    payload_batch: 2000           # set_payload batch size
+    db_batch: 5000                # Postgres upsert batch size
+  results_table:
+    schema: "analytics"
+    table: "reviews_with_clusters"

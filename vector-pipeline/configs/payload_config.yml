@@ -1,0 +1,9 @@
+# configs/payload_config.yml
+payload:
+  include_fields:
+    reviewer_name: reviewer_name
+    country: country
+    rating: rating
+    review_date: review_date
+    experience_date: date_of_experience
+    title: review_title

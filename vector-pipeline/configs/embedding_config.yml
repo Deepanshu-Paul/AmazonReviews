@@ -1,0 +1,17 @@
+# configs/embedding_config.yml
+embedding_pipelines:
+  - name: "reviews_embeddings"
+    source_schema: "customer_curation"
+    source_table: "reviews_curated"
+    text_fields: ["Review Title", "Review Text"]
+    fields_map:
+      "Review Title": "review_title"
+      "Review Text":  "review_text"
+    model:
+      name: "sentence-transformers/all-MiniLM-L6-v2"
+      batch_size: 64
+      max_length: 512
+      normalize: true
+    qdrant:
+      collection_name: "amazon_reviews"
+      distance_metric: "Cosine"
