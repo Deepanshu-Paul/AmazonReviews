@@ -1,0 +1,13 @@
+# configs/preprocessing_config.yml
+preprocessing_pipelines:
+  - name: "reviews_preprocessing"
+    source_schema: "customer_stg"
+    source_table: "reviews"
+    target_schema: "customer_curation"
+    target_table: "reviews_curated"
+    steps:
+      - type: "text_cleaning"
+        fields: ["review_text"]
+        operations: ["lowercase", "remove_html", "remove_special_chars"]
+      - type: "deduplication"
+        key_fields: ["reviewer_name", "asin", "review_text"]

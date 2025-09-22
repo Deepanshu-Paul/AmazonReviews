@@ -1,0 +1,21 @@
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3MiOiJtIn0.BxztLJAtxr21J1SJAcFjoQZj_R5LTHbzOUX183IKPJs
+
+from qdrant_client import QdrantClient
+
+qdrant_client = QdrantClient(
+    url="https://f0357a9b-4850-457e-aa42-150d5ef634c1.eu-west-2-0.aws.cloud.qdrant.io:6333", 
+    api_key="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3MiOiJtIn0.BxztLJAtxr21J1SJAcFjoQZj_R5LTHbzOUX183IKPJs",
+)
+
+print(qdrant_client.get_collections())
+
+API Key: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3MiOiJtIn0.WVIytk5sCDLSXrKfVZtoa5Z_LtkwBlTYVLAGkT_aZjA
+
+from qdrant_client import QdrantClient
+
+qdrant_client = QdrantClient(
+    url="https://f0357a9b-4850-457e-aa42-150d5ef634c1.eu-west-2-0.aws.cloud.qdrant.io:6333", 
+    api_key="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3MiOiJtIn0.WVIytk5sCDLSXrKfVZtoa5Z_LtkwBlTYVLAGkT_aZjA",
+)
+
+print(qdrant_client.get_collections())

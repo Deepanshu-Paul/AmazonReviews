@@ -1,6 +1,8 @@
 tables:
   - schema: "customer_stg"
     table: "reviews"
+    target_schema: "customer_curation"
+    target_table: "reviews_curated"
   # - schema: "customer_stg"
   #   table: "orders"
   # - schema: "analytics_stg"
